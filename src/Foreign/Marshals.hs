@@ -8,6 +8,7 @@ module Foreign.Marshals
 
 import Foreign (free)
 import Foreign.C
+import GHC.IO (unsafePerformIO)
 
 import Foreign.Marshals.Class
 
@@ -35,3 +36,8 @@ data Marshaled a = Marshaled { runMarshal :: a }
 -- | Marshal each type of a given function `f`
 class Marshals f where
   marshalEach :: f -> Marshaled (MarshalEach f)
+
+-- | Marshal types of foreign function's arguments
+instance (Marshal a, Marshals b) => Marshals (a -> b) where
+  marshalEach f = Marshaled $! \x -> unsafePerformIO
+    $ withHaskell x $ return . runMarshal . marshalEach . f
