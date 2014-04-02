@@ -17,7 +17,8 @@ library
   -- other-extensions:
   hs-source-dirs:      src
   exposed-modules:
-          Foreign.Marshals.Class
+          Foreign.Marshals
+        , Foreign.Marshals.Class
   build-depends:
           base >=4.7 && <4.8
 
