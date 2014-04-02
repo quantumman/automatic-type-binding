@@ -41,3 +41,7 @@ class Marshals f where
 instance (Marshal a, Marshals b) => Marshals (a -> b) where
   marshalEach f = Marshaled $! \x -> unsafePerformIO
     $ withHaskell x $ return . runMarshal . marshalEach . f
+
+-- | Marshal return type of foreign function
+instance (Marshal a) => Marshals (IO a) where
+  marshalEach = Marshaled . (toHaskell =<<)
