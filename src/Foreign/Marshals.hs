@@ -23,3 +23,8 @@ instance Marshal CString where
   fromHaskell = newCString
   withHaskell = withCString
   cleanup     = free
+
+-- | Bind each type of foreign function to Haskell type
+type family MarshalEach f where
+  MarshalEach (a -> b) = Haskell a -> MarshalEach b
+  MarshalEach (IO b)   = IO (Haskell b)
