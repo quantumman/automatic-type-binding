@@ -31,3 +31,7 @@ type family MarshalEach f where
 
 -- | Marshling result
 data Marshaled a = Marshaled { runMarshal :: a }
+
+-- | Marshal each type of a given function `f`
+class Marshals f where
+  marshalEach :: f -> Marshaled (MarshalEach f)
