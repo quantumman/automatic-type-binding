@@ -5,6 +5,7 @@
 module Foreign.Marshals
        (
          Marshal(..)
+       , marshals
        ) where
 
 import Foreign (free)
