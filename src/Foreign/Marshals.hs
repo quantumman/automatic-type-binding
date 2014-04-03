@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE UndecidableInstances #-}
 
 module Foreign.Marshals
        (
@@ -45,3 +46,35 @@ instance (Marshal a, Marshals b) => Marshals (a -> b) where
 -- | Marshal return type of foreign function
 instance (Marshal a) => Marshals (IO a) where
   marshalEach = Marshaled . (toHaskell =<<)
+
+-- | Provide `marshals` converting foreign function with foreign types
+-- to Haskell function.
+--
+-- Exmaple.
+--
+-- The following code is an example to marshal foreign function `put` and
+-- use marshaed functon `put'`.
+-- "Hello World" should be outputed by `put'`.
+--
+-- >>> import Foreign.C
+-- >>> foreign import ccall puts :: CString -> IO CInt
+-- >>> :{
+-- do
+--   let puts' = marshals puts
+--   r <- puts' "Hello World"
+--   return $ r > 0
+-- :}
+-- True
+--
+-- The type of `puts` is coverted to String -> IO Int
+--
+-- >>> import Data.Typeable
+--
+-- >>> show $ typeOf puts
+-- "Ptr CChar -> IO CInt"
+--
+-- >>> let puts' = marshals puts
+-- >>> show $ typeOf puts'
+-- "[Char] -> IO Int"
+marshals :: (Marshals f) => f -> MarshalEach f
+marshals = runMarshal . marshalEach
