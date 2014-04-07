@@ -28,3 +28,6 @@ instance Marshal CString where
 type family MarshalEach f where
   MarshalEach (a -> b) = Haskell a -> MarshalEach b
   MarshalEach (IO b)   = IO (Haskell b)
+
+-- | Marshling result
+data Marshaled a = Marshaled { runMarshal :: a }
