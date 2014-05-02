@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE UndecidableInstances #-}
 
@@ -8,17 +9,16 @@ module Foreign.Marshals
        , marshals
        ) where
 
+import Data.Int
 import Foreign (free)
 import Foreign.C
 import GHC.IO (unsafePerformIO)
 
 import Foreign.Marshals.Class
+import Foreign.Marshals.TH
 
 
-instance Marshal CInt where
-  type Haskell CInt = Int
-  toHaskell   = return . fromIntegral
-  fromHaskell = return . fromIntegral
+mkMarshalInstances ''Int8 [''CChar, ''CSChar]
 
 instance Marshal CString where
   type Haskell CString = String
