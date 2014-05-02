@@ -25,6 +25,7 @@ mkMarshalInstances ''Int16 [''CShort]
 mkMarshalInstances ''Word16 [''CUShort]
 mkMarshalInstances ''Int [''CInt, ''CWchar]
 mkMarshalInstances ''Word [''CUInt, ''CSize]
+mkMarshalInstances ''Int64 [''CLong]
 
 instance Marshal CString where
   type Haskell CString = String
