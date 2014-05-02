@@ -22,6 +22,7 @@ import Foreign.Marshals.TH
 mkMarshalInstances ''Int8 [''CChar, ''CSChar]
 mkMarshalInstances ''Word8 [''CUChar]
 mkMarshalInstances ''Int16 [''CShort]
+mkMarshalInstances ''Word16 [''CUShort]
 
 instance Marshal CString where
   type Haskell CString = String
