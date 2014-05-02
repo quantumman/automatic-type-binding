@@ -10,6 +10,7 @@ module Foreign.Marshals
        ) where
 
 import Data.Int
+import Data.Word
 import Foreign (free)
 import Foreign.C
 import GHC.IO (unsafePerformIO)
@@ -19,6 +20,7 @@ import Foreign.Marshals.TH
 
 
 mkMarshalInstances ''Int8 [''CChar, ''CSChar]
+mkMarshalInstances ''Word8 [''CUChar]
 
 instance Marshal CString where
   type Haskell CString = String
